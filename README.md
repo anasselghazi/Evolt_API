@@ -1,59 +1,209 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+ # ⚡ EVolt API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 📌 Description
 
-## About Laravel
+**EVolt API** est une API REST développée avec **Laravel** pour la gestion des bornes de recharge pour véhicules électriques.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Elle permet aux utilisateurs de :
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* rechercher des bornes de recharge disponibles
+* réserver un créneau de recharge
+* gérer leurs réservations
+* consulter l’historique des sessions de recharge
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Les administrateurs peuvent :
 
-## Learning Laravel
+* gérer les bornes de recharge (CRUD)
+* consulter les statistiques d’utilisation.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# 🚀 Technologies utilisées
 
-## Laravel Sponsors
+* **Laravel 10+**
+* **Laravel Sanctum** (Authentification API)
+* **MySQL**
+* **Postman** (tests API)
+* **PHP 8+**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+# ⚙️ Installation
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 1️⃣ Cloner le projet
 
-## Contributing
+```bash
+git clone https://github.com/username/evolt-api.git
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 2️⃣ Aller dans le dossier du projet
 
-## Code of Conduct
+```bash
+cd evolt-api
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3️⃣ Installer les dépendances
 
-## Security Vulnerabilities
+```bash
+composer install
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4️⃣ Configurer le fichier .env
 
-## License
+Copier le fichier :
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+cp .env.example .env
+```
+
+Modifier les informations de base de données :
+
+```
+DB_DATABASE=evolt
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 5️⃣ Générer la clé de l'application
+
+```bash
+php artisan key:generate
+```
+
+### 6️⃣ Lancer les migrations
+
+```bash
+php artisan migrate
+```
+
+### 7️⃣ Lancer le serveur
+
+```bash
+php artisan serve
+```
+
+Le serveur sera accessible sur :
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+# 🔐 Authentification
+
+L'API utilise **Laravel Sanctum** pour sécuriser les requêtes.
+
+Après connexion, un **token** est généré et doit être envoyé dans le header :
+
+```
+Authorization: Bearer TOKEN
+```
+
+---
+
+# 📡 API Endpoints
+
+## Authentification
+
+| Method | Endpoint      | Description |
+| ------ | ------------- | ----------- |
+| POST   | /api/register | Inscription |
+| POST   | /api/login    | Connexion   |
+
+---
+
+## Stations
+
+| Method | Endpoint           | Description         |
+| ------ | ------------------ | ------------------- |
+| GET    | /api/stations      | Liste des bornes    |
+| GET    | /api/stations/{id} | Détails d'une borne |
+| POST   | /api/stations      | Ajouter une borne   |
+| PUT    | /api/stations/{id} | Modifier une borne  |
+| DELETE | /api/stations/{id} | Supprimer une borne |
+
+---
+
+## Reservations
+
+| Method | Endpoint               | Description              |
+| ------ | ---------------------- | ------------------------ |
+| GET    | /api/reservations      | Liste des réservations   |
+| POST   | /api/reservations      | Créer une réservation    |
+| PUT    | /api/reservations/{id} | Modifier une réservation |
+| DELETE | /api/reservations/{id} | Annuler une réservation  |
+
+---
+
+# 🗄️ Structure du projet
+
+```
+app
+ ├── Models
+ │    ├── User.php
+ │    ├── Station.php
+ │    └── Reservation.php
+ │
+ ├── Http
+ │    ├── Controllers
+ │    │     ├── AuthController.php
+ │    │     ├── StationController.php
+ │    │     └── ReservationController.php
+ │
+database
+ ├── migrations
+```
+
+---
+
+# 🧪 Tests
+
+Les endpoints peuvent être testés avec :
+
+* **Postman**
+* **Insomnia**
+
+Exemple :
+
+```
+GET /api/stations
+```
+
+Header :
+
+```
+Authorization: Bearer TOKEN
+```
+
+---
+
+# 📊 Fonctionnalités principales
+
+✔ Authentification sécurisée avec Sanctum
+✔ Gestion des bornes de recharge
+✔ Système de réservation
+✔ Gestion des sessions de recharge
+✔ API RESTful
+✔ Gestion des erreurs
+
+---
+
+# 📚 Documentation API
+
+La documentation complète de l'API est disponible via **Postman Collection**.
+
+---
+
+# 👨‍💻 Auteur
+
+**Anass Elghazi**
+
+Développeur Web Full Stack
+YouCode - Safi, Maroc
+
+---
+
+# 📄 Licence
+
+Ce projet est développé dans un cadre pédagogique.
