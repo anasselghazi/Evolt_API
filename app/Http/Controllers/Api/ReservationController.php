@@ -13,7 +13,21 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        //
+    $reservations = auth()->user()
+        ->reservations()
+        ->with('chargingStation')
+        ->get()
+        ->map(function ($r) {
+            return [
+                'id'     => $r->id,
+                'borne'  => $r->chargingStation->name,
+                'date'   => $r->date,
+                'heure'  => $r->heure,
+                'status' => $r->status,
+            ];
+        });
+
+    return response()->json($reservations);
     }
 
     /**
@@ -46,11 +60,39 @@ class ReservationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function pay($id)
+{
+    $reservation = Reservation::find($id);
+
+    
+    if (!$reservation) {
+        return response()->json([
+            'message' => 'Réservation introuvable'
+        ], 404);
     }
 
+    
+    if ($reservation->user_id !== auth()->id()) {
+        return response()->json([
+            'message' => 'Non autorisé'
+        ], 403);
+    }
+
+    
+    if ($reservation->status !== 'pending') {
+        return response()->json([
+            'message' => 'Cette réservation ne peut pas être payée'
+        ], 400);
+    }
+
+    
+    $reservation->update(['status' => 'confirmed']);
+
+    return response()->json([
+        'message'     => 'Paiement effectué avec succès',
+        'reservation' => $reservation
+    ]);
+}
     /**
      * Remove the specified resource from storage.
      */

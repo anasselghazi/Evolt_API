@@ -11,5 +11,10 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/reservation', [ReservationController::class, 'store']);
+Route::post('/reservation', [ReservationController::class, 'store']);
+Route::get('/mes-reservations', [ReservationController::class, 'index']);
+Route::patch('/reservations/{id}/pay', [ReservationController::class, 'pay']);
+
+
+
 });
