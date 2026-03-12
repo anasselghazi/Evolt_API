@@ -13,4 +13,8 @@ class Reservation extends Model
         'heure',
         'status',
     ];
+    public function chargingStation()
+    {
+    return $this->belongsTo(ChargingStation::class);
+    }
 }
