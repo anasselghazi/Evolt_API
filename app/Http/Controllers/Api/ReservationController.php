@@ -96,8 +96,44 @@ class ReservationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function cancel($id)
+{
+    $reservation = Reservation::find($id);
+
+    
+    if (!$reservation) {
+        return response()->json([
+            'message' => 'Réservation introuvable'
+        ], 404);
     }
+
+    
+    if ($reservation->user_id !== auth()->id()) {
+        return response()->json([
+            'message' => 'Non autorisé'
+        ], 403);
+    }
+
+    
+    if ($reservation->status === 'payee') {
+        return response()->json([
+            'message' => 'Impossible d\'annuler une réservation payée'
+        ], 400);
+    }
+
+    
+    if ($reservation->status === 'cancelled') {
+        return response()->json([
+            'message' => 'Réservation déjà annulée'
+        ], 400);
+    }
+
+    
+    $reservation->update(['status' => 'cancelled']);
+
+    return response()->json([
+        'message'     => 'Réservation annulée avec succès',
+        'reservation' => $reservation
+    ]);
+}
 }
