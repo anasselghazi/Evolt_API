@@ -3,6 +3,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ReservationController;
+use App\Http\Controllers\Api\AdminController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -14,6 +15,9 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/reservation', [ReservationController::class, 'store']);
 Route::get('/mes-reservations', [ReservationController::class, 'index']);
 Route::post('/reservations/{id}/pay', [ReservationController::class, 'pay']);
-
 Route::post('/reservations/{id}/cancel', [ReservationController::class, 'cancel']);
+
+Route::middleware('admin')->group(function () {
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+    });
 });
